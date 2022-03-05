@@ -147,7 +147,7 @@
       // @click.stop.preventで設定したgoQuiz()をここで定義します
       const goQuiz = () => {
         const router = context.root.$router;
-        router.push({name: "quiz"}); // router.pushを使うことで、画面リロードすることなくURLを変更できます。
+        router.push("/quiz?categories=" + state.categories); // router.pushを使うことで、画面リロードすることなくURLを変更できます。
       };
       return {
         state,

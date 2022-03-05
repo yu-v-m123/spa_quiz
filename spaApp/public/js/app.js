@@ -2313,9 +2313,7 @@ __webpack_require__.r(__webpack_exports__);
 
     var goQuiz = function goQuiz() {
       var router = context.root.$router;
-      router.push({
-        name: "quiz"
-      }); // router.pushを使うことで、画面リロードすることなくURLを変更できます。
+      router.push("/quiz?categories=" + state.categories); // router.pushを使うことで、画面リロードすることなくURLを変更できます。
     };
 
     return {
@@ -75555,20 +75553,24 @@ var __webpack_exports__ = {};
   !*** ./resources/js/app.js ***!
   \*****************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var _router_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router.js */ "./resources/js/router.js");
 /* harmony import */ var vue_social_sharing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-social-sharing */ "./node_modules/vue-social-sharing/dist/vue-social-sharing.js");
 /* harmony import */ var vue_social_sharing__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_social_sharing__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _vue_composition_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @vue/composition-api */ "../../../../node_modules/@vue/composition-api/dist/vue-composition-api.mjs");
+/* harmony import */ var _vue_composition_api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @vue/composition-api */ "../../../../node_modules/@vue/composition-api/dist/vue-composition-api.mjs");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_2__["default"].use(_vue_composition_api__WEBPACK_IMPORTED_MODULE_3__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_2__["default"].use((vue_social_sharing__WEBPACK_IMPORTED_MODULE_1___default()));
-new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
+
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].use((vue_social_sharing__WEBPACK_IMPORTED_MODULE_1___default()));
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].use(_vue_composition_api__WEBPACK_IMPORTED_MODULE_4__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].prototype.$http = (axios__WEBPACK_IMPORTED_MODULE_2___default());
+new vue__WEBPACK_IMPORTED_MODULE_3__["default"]({
   el: '#app',
   router: _router_js__WEBPACK_IMPORTED_MODULE_0__["default"]
 }).$mount('#app');

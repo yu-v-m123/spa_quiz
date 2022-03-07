@@ -2300,7 +2300,6 @@ __webpack_require__.r(__webpack_exports__);
 
     var goQuiz = function goQuiz() {
       var router = context.root.$router;
-      console.log(router);
       router.push("/quiz?categories=" + state.categories); // router.pushを使うことで、画面リロードすることなくURLを変更できます。
     };
 
@@ -2335,6 +2334,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layout_TheHeader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout/TheHeader */ "./resources/js/components/page/layout/TheHeader.vue");
 /* harmony import */ var _layout_TheFooter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layout/TheFooter */ "./resources/js/components/page/layout/TheFooter.vue");
 /* harmony import */ var _layout_TheSidebar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layout/TheSidebar */ "./resources/js/components/page/layout/TheSidebar.vue");
+/* harmony import */ var _vue_composition_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @vue/composition-api */ "../../../../node_modules/@vue/composition-api/dist/vue-composition-api.mjs");
 //
 //
 //
@@ -2420,6 +2420,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -2428,6 +2429,21 @@ __webpack_require__.r(__webpack_exports__);
     TheHeader: _layout_TheHeader__WEBPACK_IMPORTED_MODULE_0__["default"],
     TheFooter: _layout_TheFooter__WEBPACK_IMPORTED_MODULE_1__["default"],
     TheSidebar: _layout_TheSidebar__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  setup: function setup(props, context) {
+    var state = (0,_vue_composition_api__WEBPACK_IMPORTED_MODULE_3__.reactive)({
+      quizData: []
+    });
+    (0,_vue_composition_api__WEBPACK_IMPORTED_MODULE_3__.onMounted)(function () {
+      var router = context.root.$router;
+      var categories = router.app.$route.query.categories;
+      context.root.$http.get("/api/quiz?categories=".concat(categories)).then(function (response) {
+        state.quizData = response.data;
+      });
+    });
+    return {
+      state: state
+    };
   }
 });
 

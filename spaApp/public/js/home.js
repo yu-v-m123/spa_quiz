@@ -152,7 +152,6 @@ __webpack_require__.r(__webpack_exports__);
 
     var goQuiz = function goQuiz() {
       var router = context.root.$router;
-      console.log(router);
       router.push("/quiz?categories=" + state.categories); // router.pushを使うことで、画面リロードすることなくURLを変更できます。
     };
 

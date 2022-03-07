@@ -87,6 +87,7 @@
   import TheHeader from './layout/TheHeader';
   import TheFooter from './layout/TheFooter';
   import TheSidebar from './layout/TheSidebar';
+  import { reactive, onMounted } from "@vue/composition-api";
 
   export default {
     components: {
@@ -94,5 +95,24 @@
       TheFooter,
       TheSidebar,
     },
-  }
+
+    setup(props, context) {
+      const state = reactive({
+        quizData: [],
+      });
+      onMounted(() => {
+        const router = context.root.$router;
+        const categories = router.app.$route.query.categories;
+
+        context.root.$http
+          .get(`/api/quiz?categories=${categories}`)
+          .then((response) => {
+            state.quizData = response.data;
+          });
+      });
+      return {
+        state,
+      };
+    },
+  };
 </script>

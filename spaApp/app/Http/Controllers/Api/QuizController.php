@@ -13,9 +13,16 @@ class QuizController extends Controller
       $category = $request->input('categories');
       if ($category) {
         $category = explode(',', $category);
-        return $category;
       } else {
         return [];
       }
+
+      $quiz = Quiz::with(['answer', 'category'])
+      ->wherein('quizzes.categories_id', $category)
+      ->inRandomOrder()
+      ->limit(10)
+      ->get();
+
+      return $quiz;
     }
 }

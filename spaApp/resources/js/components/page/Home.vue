@@ -26,23 +26,8 @@
                 />出題設定
               </h2>
               <form>
-                <label>
-                  <input type="checkbox" v-model="state.categories" value="1" checked />ビジネスマナー
-                </label>
-                <label>
-                  <input type="checkbox" v-model="state.categories" value="2" />一般常識
-                </label>
-                <label>
-                  <input type="checkbox" v-model="state.categories" value="3" />就職・転職
-                </label>
-                <label>
-                  <input type="checkbox" v-model="state.categories" value="4" />法律
-                </label>
-                <label>
-                  <input type="checkbox" v-model="state.categories" value="5" />IT
-                </label>
-                <label>
-                  <input type="checkbox" v-model="state.categories" value="6" />雑学
+                <label v-for="(cate, index) in state.category" :key="index">
+                  <input type="checkbox" v-model="state.categories" v-bind:value="cate.id" />{{ cate.name }}&ensp;
                 </label>
                 <div class>
                   全項目チェック
@@ -112,9 +97,9 @@
                   src="/images/news-icon.png"
                 />お知らせ情報
               </h2>
-              <dl>
-                <dt>2019/08/23</dt>
-                <dd>サイトを開設しました。</dd>
+              <dl v-for="(info, index) in state.information" :key="index">
+                <dt>{{ info.created_at }}</dt>
+                <dd>{{ info.information }}</dd>
               </dl>
             </section>
           </article>
@@ -131,7 +116,7 @@
   import TheFooter from './layout/TheFooter';
   import TheSidebar from './layout/TheSidebar';
   import BarChart from './module/BarChart';
-  import { reactive } from "@vue/composition-api";
+  import { reactive, onMounted } from "@vue/composition-api";
 
   export default {
     components: {
@@ -143,12 +128,23 @@
     setup(props, context) {
       const state = reactive({
         categories: [1], // categoriesのデフォルト値を設定します。ここでは[1]配列の1とします。
+        information: [],
+        category: [],
       });
       // @click.stop.preventで設定したgoQuiz()をここで定義します
       const goQuiz = () => {
         const router = context.root.$router;
+        console.log(router);
         router.push("/quiz?categories=" + state.categories); // router.pushを使うことで、画面リロードすることなくURLを変更できます。
       };
+      onMounted(() => {
+        context.root.$http.get("/api/information").then((response) => {
+          state.information = response.data;
+        });
+        context.root.$http.get("/api/category").then((response) => {
+          state.category = response.data;
+        });
+      });
       return {
         state,
         goQuiz,

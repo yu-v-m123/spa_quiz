@@ -13,7 +13,7 @@
                 />	
                 第{{ state.quizNumber }}問	
               </h2>	
-              <p>{{ state.title }}</p>	
+              <p>{{ state.title }}</p>
               <div v-if="state.imageSrc">	
                 <img	
                   class="img-responsive"	
@@ -49,7 +49,7 @@
               {{ state.correctAnswerNo }}
               </button>
             </p>
-            <button class="quiz-show-answer" v-show="!state.isAlreadyAnswered">正解を表示する</button>
+            <button class="quiz-show-answer" @click="goAnswer(0)" v-show="!state.isAlreadyAnswered">正解を表示する</button>
             <div class="alert alert-info" v-show="state.isCorrect">
               <strong>正解!</strong>
             </div>
@@ -70,6 +70,7 @@
             <button
               type="button"
               class="btn btn-primary d-block mx-auto quiz-next__button"
+              @click='goNextQuiz'
               v-if="!state.isQuizFinish"
             >
             次の問題へ
@@ -134,6 +135,24 @@
           });
       });
 
+      const goAnswer = (selectAnswerNum) => {
+        if (selectAnswerNum === 0) {
+          state.isCorrect = false;
+          state.isMistake = false;
+        } else if (selectAnswerNum === Number(state.correctAnswerNo)) {
+          state.isCorrect = true;
+          state.isMistake = false;
+          state.score += 1;
+        } else {
+          state.isCorrect = false;
+          state.isMistake = true;
+        }
+        state.isAlreadyAnswered = true;
+        if (state.quizNumber >= 10) {
+          endQuiz();
+        }
+      };
+
       const findNextQuiz = (quizNumber) => {
         state.title = state.quizData[quizNumber].title;
         state.answers = [
@@ -145,10 +164,32 @@
         state.commentary = state.quizData[quizNumber].answer.commentary;
         state.correctAnswerNo = state.quizData[quizNumber].answer.correct_answer_no;
         state.categoryName = state.quizData[quizNumber].category.name;
+      };
+
+      const goNextQuiz = () => {
+        if (state.quizNumber >= 10) {
+          endQuiz();
+        } else {
+          findNextQuiz(state.quizNumber);
+          state.quizNumber += 1;
+          state.isCorrect = false;
+          state.isMistake = false;
+          state.isAlreadyAnswered = false;
+        }
+      };
+      
+      const endQuiz = () => {
+        state.isQuizFinish = true;
+        state.answerNo = '-';
+        state.isAlreadyAnswered = true;
       }
+
       return {
         state,
         findNextQuiz,
+        goAnswer,
+        goNextQuiz,
+        endQuiz,
       };
     },
   };

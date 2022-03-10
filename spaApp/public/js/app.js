@@ -2430,6 +2430,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2469,6 +2470,26 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
 
+    var goAnswer = function goAnswer(selectAnswerNum) {
+      if (selectAnswerNum === 0) {
+        state.isCorrect = false;
+        state.isMistake = false;
+      } else if (selectAnswerNum === Number(state.correctAnswerNo)) {
+        state.isCorrect = true;
+        state.isMistake = false;
+        state.score += 1;
+      } else {
+        state.isCorrect = false;
+        state.isMistake = true;
+      }
+
+      state.isAlreadyAnswered = true;
+
+      if (state.quizNumber >= 10) {
+        endQuiz();
+      }
+    };
+
     var findNextQuiz = function findNextQuiz(quizNumber) {
       state.title = state.quizData[quizNumber].title;
       state.answers = [state.quizData[quizNumber].answer.answer_1, state.quizData[quizNumber].answer.answer_2, state.quizData[quizNumber].answer.answer_3, state.quizData[quizNumber].answer.answer_4];
@@ -2477,9 +2498,30 @@ __webpack_require__.r(__webpack_exports__);
       state.categoryName = state.quizData[quizNumber].category.name;
     };
 
+    var goNextQuiz = function goNextQuiz() {
+      if (state.quizNumber >= 10) {
+        endQuiz();
+      } else {
+        findNextQuiz(state.quizNumber);
+        state.quizNumber += 1;
+        state.isCorrect = false;
+        state.isMistake = false;
+        state.isAlreadyAnswered = false;
+      }
+    };
+
+    var endQuiz = function endQuiz() {
+      state.isQuizFinish = true;
+      state.answerNo = '-';
+      state.isAlreadyAnswered = true;
+    };
+
     return {
       state: state,
-      findNextQuiz: findNextQuiz
+      findNextQuiz: findNextQuiz,
+      goAnswer: goAnswer,
+      goNextQuiz: goNextQuiz,
+      endQuiz: endQuiz
     };
   }
 });
@@ -57190,6 +57232,11 @@ var render = function () {
                         },
                       ],
                       staticClass: "quiz-show-answer",
+                      on: {
+                        click: function ($event) {
+                          return _vm.goAnswer(0)
+                        },
+                      },
                     },
                     [_vm._v("正解を表示する")]
                   ),
@@ -57259,6 +57306,7 @@ var render = function () {
                           staticClass:
                             "btn btn-primary d-block mx-auto quiz-next__button",
                           attrs: { type: "button" },
+                          on: { click: _vm.goNextQuiz },
                         },
                         [_vm._v("\n          次の問題へ\n          ")]
                       )
